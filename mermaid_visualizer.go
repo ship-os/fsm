@@ -35,10 +35,10 @@ func visualizeForMermaidAsStateDiagram(fsm *FSM) string {
 	sortedTransitionKeys := getSortedTransitionKeys(fsm.transitions)
 
 	buf.WriteString("stateDiagram-v2\n")
-	buf.WriteString(fmt.Sprintln(`    [*] -->`, fsm.current))
+	buf.WriteString(fmt.Sprintln(`    [*] -->`, fsm.Current()))
 
 	for _, k := range sortedTransitionKeys {
-		v := fsm.transitions[k]
+		v := fsm.allTransitions()[k]
 		buf.WriteString(fmt.Sprintf(`    %s --> %s: %s`, k.src, v, k.event))
 		buf.WriteString("\n")
 	}
@@ -55,8 +55,8 @@ func visualizeForMermaidAsFlowChart(fsm *FSM) string {
 
 	writeFlowChartGraphType(&buf)
 	writeFlowChartStates(&buf, sortedStates, statesToIDMap)
-	writeFlowChartTransitions(&buf, fsm.transitions, sortedTransitionKeys, statesToIDMap)
-	writeFlowChartHightlightCurrent(&buf, fsm.current, statesToIDMap)
+	writeFlowChartTransitions(&buf, fsm.allTransitions(), sortedTransitionKeys, statesToIDMap)
+	writeFlowChartHightlightCurrent(&buf, fsm.Current(), statesToIDMap)
 
 	return buf.String()
 }

@@ -416,6 +416,10 @@ func (f *FSM) afterEventCallbacks(e *Event) {
 	}
 }
 
+func (f *FSM) allTransitions() map[eKey]string {
+	return f.transitions
+}
+
 const (
 	callbackNone int = iota
 	callbackBeforeEvent

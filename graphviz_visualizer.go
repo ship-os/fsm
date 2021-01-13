@@ -14,7 +14,7 @@ func Visualize(fsm *FSM) string {
 	sortedStateKeys, _ := getSortedStates(fsm.transitions)
 
 	writeHeaderLine(&buf)
-	writeTransitions(&buf, fsm.current, sortedEKeys, fsm.transitions)
+	writeTransitions(&buf, fsm.Current(), sortedEKeys, fsm.allTransitions())
 	writeStates(&buf, sortedStateKeys)
 	writeFooter(&buf)
 
