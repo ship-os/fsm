@@ -1,6 +1,6 @@
 # FSM for Go
 
-![License](https://img.shields.io/github/license/ship-os/fsm) [![Go.Dev reference](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white&style=flat-square)](https://pkg.go.dev/github.com/ship-os/fsm?tab=doc) [![Go Report Card](https://goreportcard.com/badge/github.com/ship-os/fsm)]https://goreportcard.com/report/github.com/ship-os/fsm) 
+![License](https://img.shields.io/github/license/ship-os/fsm) [![Go.Dev reference](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white&style=flat-square)](https://pkg.go.dev/github.com/ship-os/fsm?tab=doc) [![Go Report Card](https://goreportcard.com/badge/github.com/ship-os/fsm)](https://goreportcard.com/report/github.com/ship-os/fsm) 
 
 FSM is a finite state machine for Go.
 
