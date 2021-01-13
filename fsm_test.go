@@ -23,7 +23,7 @@ func TestSameState(t *testing.T) {
 		},
 		Callbacks{},
 	)
-	fsm.Event("run")
+	fsm.Event("run") // nolint: errcheck
 	if fsm.Current() != "start" {
 		t.Error("expected state to be 'start'")
 	}
@@ -103,20 +103,20 @@ func TestMultipleSources(t *testing.T) {
 		Callbacks{},
 	)
 
-	fsm.Event("first")
+	fsm.Event("first") // nolint: errcheck
 	if fsm.Current() != "two" {
 		t.Error("expected state to be 'two'")
 	}
-	fsm.Event("reset")
+	fsm.Event("reset") // nolint: errcheck
 	if fsm.Current() != "one" {
 		t.Error("expected state to be 'one'")
 	}
-	fsm.Event("first")
-	fsm.Event("second")
+	fsm.Event("first")  // nolint: errcheck
+	fsm.Event("second") // nolint: errcheck
 	if fsm.Current() != "three" {
 		t.Error("expected state to be 'three'")
 	}
-	fsm.Event("reset")
+	fsm.Event("reset") // nolint: errcheck
 	if fsm.Current() != "one" {
 		t.Error("expected state to be 'one'")
 	}
@@ -135,22 +135,22 @@ func TestMultipleEvents(t *testing.T) {
 		Callbacks{},
 	)
 
-	fsm.Event("first")
-	fsm.Event("reset")
+	fsm.Event("first") // nolint: errcheck
+	fsm.Event("reset") // nolint: errcheck
 	if fsm.Current() != "reset_one" {
 		t.Error("expected state to be 'reset_one'")
 	}
-	fsm.Event("reset")
+	fsm.Event("reset") // nolint: errcheck
 	if fsm.Current() != "start" {
 		t.Error("expected state to be 'start'")
 	}
 
-	fsm.Event("second")
-	fsm.Event("reset")
+	fsm.Event("second") // nolint: errcheck
+	fsm.Event("reset")  // nolint: errcheck
 	if fsm.Current() != "reset_two" {
 		t.Error("expected state to be 'reset_two'")
 	}
-	fsm.Event("reset")
+	fsm.Event("reset") // nolint: errcheck
 	if fsm.Current() != "start" {
 		t.Error("expected state to be 'start'")
 	}
@@ -183,7 +183,7 @@ func TestGenericCallbacks(t *testing.T) {
 		},
 	)
 
-	fsm.Event("run")
+	fsm.Event("run") // nolint: errcheck
 	if !(beforeEvent && leaveState && enterState && afterEvent) {
 		t.Error("expected all callbacks to be called")
 	}
@@ -216,7 +216,7 @@ func TestSpecificCallbacks(t *testing.T) {
 		},
 	)
 
-	fsm.Event("run")
+	fsm.Event("run") // nolint: errcheck
 	if !(beforeEvent && leaveState && enterState && afterEvent) {
 		t.Error("expected all callbacks to be called")
 	}
@@ -241,7 +241,7 @@ func TestSpecificCallbacksShortform(t *testing.T) {
 		},
 	)
 
-	fsm.Event("run")
+	fsm.Event("run") // nolint: errcheck
 	if !(enterState && afterEvent) {
 		t.Error("expected all callbacks to be called")
 	}
@@ -253,7 +253,7 @@ func TestBeforeEventWithoutTransition(t *testing.T) {
 	fsm := NewFSM(
 		"start",
 		Events{
-			{Name: "dontrun", Src: []string{"start"}, Dst: "start"},
+			{Name: "do-not-run", Src: []string{"start"}, Dst: "start"},
 		},
 		Callbacks{
 			"before_event": func(e *Event) {
@@ -262,7 +262,7 @@ func TestBeforeEventWithoutTransition(t *testing.T) {
 		},
 	)
 
-	err := fsm.Event("dontrun")
+	err := fsm.Event("do-not-run")
 	if e, ok := err.(NoTransitionError); !ok && e.Err != nil {
 		t.Error("expected 'NoTransitionError' without custom error")
 	}
@@ -287,7 +287,7 @@ func TestCancelBeforeGenericEvent(t *testing.T) {
 			},
 		},
 	)
-	fsm.Event("run")
+	fsm.Event("run") // nolint: errcheck
 	if fsm.Current() != "start" {
 		t.Error("expected state to be 'start'")
 	}
@@ -305,7 +305,7 @@ func TestCancelBeforeSpecificEvent(t *testing.T) {
 			},
 		},
 	)
-	fsm.Event("run")
+	fsm.Event("run") // nolint: errcheck
 	if fsm.Current() != "start" {
 		t.Error("expected state to be 'start'")
 	}
@@ -323,7 +323,7 @@ func TestCancelLeaveGenericState(t *testing.T) {
 			},
 		},
 	)
-	fsm.Event("run")
+	fsm.Event("run") // nolint: errcheck
 	if fsm.Current() != "start" {
 		t.Error("expected state to be 'start'")
 	}
@@ -341,7 +341,7 @@ func TestCancelLeaveSpecificState(t *testing.T) {
 			},
 		},
 	)
-	fsm.Event("run")
+	fsm.Event("run") // nolint: errcheck
 	if fsm.Current() != "start" {
 		t.Error("expected state to be 'start'")
 	}
@@ -385,11 +385,11 @@ func TestAsyncTransitionGenericState(t *testing.T) {
 			},
 		},
 	)
-	fsm.Event("run")
+	fsm.Event("run") // nolint: errcheck
 	if fsm.Current() != "start" {
 		t.Error("expected state to be 'start'")
 	}
-	fsm.Transition()
+	fsm.Transition() // nolint: errcheck
 	if fsm.Current() != "end" {
 		t.Error("expected state to be 'end'")
 	}
@@ -407,11 +407,11 @@ func TestAsyncTransitionSpecificState(t *testing.T) {
 			},
 		},
 	)
-	fsm.Event("run")
+	fsm.Event("run") // nolint: errcheck
 	if fsm.Current() != "start" {
 		t.Error("expected state to be 'start'")
 	}
-	fsm.Transition()
+	fsm.Transition() // nolint: errcheck
 	if fsm.Current() != "end" {
 		t.Error("expected state to be 'end'")
 	}
@@ -430,13 +430,13 @@ func TestAsyncTransitionInProgress(t *testing.T) {
 			},
 		},
 	)
-	fsm.Event("run")
+	fsm.Event("run") // nolint: errcheck
 	err := fsm.Event("reset")
 	if e, ok := err.(InTransitionError); !ok && e.Event != "reset" {
 		t.Error("expected 'InTransitionError' with correct state")
 	}
-	fsm.Transition()
-	fsm.Event("reset")
+	fsm.Transition()   // nolint: errcheck
+	fsm.Event("reset") // nolint: errcheck
 	if fsm.Current() != "start" {
 		t.Error("expected state to be 'start'")
 	}
@@ -513,7 +513,7 @@ func TestCallbackArgs(t *testing.T) {
 			},
 		},
 	)
-	fsm.Event("run", "test")
+	fsm.Event("run", "test") // nolint: errcheck
 }
 
 func TestCallbackPanic(t *testing.T) {
@@ -554,7 +554,7 @@ func TestNoDeadLock(t *testing.T) {
 			},
 		},
 	)
-	fsm.Event("run")
+	fsm.Event("run") // nolint: errcheck
 }
 
 func TestThreadSafetyRaceCondition(t *testing.T) {
@@ -574,7 +574,7 @@ func TestThreadSafetyRaceCondition(t *testing.T) {
 		defer wg.Done()
 		_ = fsm.Current()
 	}()
-	fsm.Event("run")
+	fsm.Event("run") // nolint: errcheck
 	wg.Wait()
 }
 

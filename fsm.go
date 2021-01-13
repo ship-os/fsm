@@ -55,7 +55,7 @@ type EventDesc struct {
 	Src []string
 
 	// Dst is the destination state that the FSM will be in if the transition
-	// succeds.
+	// succeeds.
 	Dst string
 }
 
@@ -71,7 +71,7 @@ type Callbacks map[string]Callback
 
 // NewFSM constructs a FSM from events and callbacks.
 //
-// The events and transitions are specified as a slice of Event structs
+// The events and transitions are specified as a slice of Event struct
 // specified as Events. Each Event is mapped to one or more internal
 // transitions from Event.Src to Event.Dst.
 //
@@ -103,7 +103,7 @@ type Callbacks map[string]Callback
 //
 // If both a shorthand version and a full version is specified it is undefined
 // which version of the callback will end up in the internal map. This is due
-// to the psuedo random nature of Go maps. No checking for multiple keys is
+// to the pseudo random nature of Go maps. No checking for multiple keys is
 // currently performed.
 func NewFSM(initial string, events []EventDesc, callbacks map[string]Callback) *FSM {
 	f := &FSM{
@@ -201,7 +201,6 @@ func (f *FSM) SetState(state string) {
 	f.stateMu.Lock()
 	defer f.stateMu.Unlock()
 	f.current = state
-	return
 }
 
 // Can returns true if event can occur in the current state.
@@ -226,7 +225,7 @@ func (f *FSM) AvailableTransitions() []string {
 	return transitions
 }
 
-// Cannot returns true if event can not occure in the current state.
+// Cannot returns true if event can not occur in the current state.
 // It is a convenience method to help code read nicely.
 func (f *FSM) Cannot(event string) bool {
 	return !f.Can(event)
@@ -277,8 +276,8 @@ func (f *FSM) Event(event string, args ...interface{}) error {
 
 	dst, ok := f.transitions[eKey{event, f.current}]
 	if !ok {
-		for ekey := range f.transitions {
-			if ekey.event == event {
+		for ek := range f.transitions {
+			if ek.event == event {
 				return InvalidEventError{event, f.current}
 			}
 		}
@@ -341,9 +340,9 @@ func (f *FSM) doTransition() error {
 // interface. Other implementations can be swapped in for testing.
 type transitionerStruct struct{}
 
-// Transition completes an asynchrounous state change.
+// Transition completes an asynchronous state change.
 //
-// The callback for leave_<STATE> must prviously have called Async on its
+// The callback for leave_<STATE> must previously have called Async on its
 // event to have initiated an asynchronous state transition.
 func (t transitionerStruct) transition(f *FSM) error {
 	if f.transition == nil {
